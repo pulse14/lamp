@@ -16,6 +16,8 @@ ADD my.cnf /etc/mysql/conf.d/my.cnf
 ADD supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
 ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
 
+RUN php5enmod mcrypt intl
+
 # Remove pre-installed database
 RUN rm -rf /var/lib/mysql/*
 
