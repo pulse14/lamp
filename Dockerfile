@@ -4,11 +4,12 @@ MAINTAINER Fernando Mayo <fernando@tutum.co>, Feng Honglin <hfeng@tutum.co>
 # Install packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
-  apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql php5-intl php5-gd pwgen php-apc php5-mcrypt php5-dev && \
+  apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql php5-intl php5-gd pwgen php-apc php5-mcrypt php5-dev php5-xdebug && \
   echo "ServerName localhost" >> /etc/apache2/apache2.conf
-  
-RUN yes | pecl install xdebug \
-  && echo "extension=xdebug.so" > /etc/php5/apache2/php.ini
+
+RUN touch /etc/php5/fpm/conf.d/40-add.ini
+RUN echo "zend_extension = xdebug.so" >> /etc/php5/fpm/conf.d/40-add.ini
+RUN echo "xdebug.remote_enable = 1" >> /etc/php5/fpm/conf.d/40-add.ini
 
 # Add image configuration and scripts
 ADD start-apache2.sh /start-apache2.sh
@@ -41,7 +42,7 @@ ENV PHP_UPLOAD_MAX_FILESIZE 10M
 ENV PHP_POST_MAX_SIZE 10M
 
 # Add volumes for MySQL 
-VOLUME  ["/etc/mysql", "/var/lib/mysql", "/app", "/etc/php5/apache2"]
+VOLUME  ["/etc/mysql", "/var/lib/mysql", "/app"]
 
 EXPOSE 80 3306 9000
 CMD ["/run.sh"]
