@@ -10,6 +10,7 @@ RUN apt-get update && \
 RUN touch /etc/php5/apache2/conf.d/40-add.ini
 RUN echo "zend_extension = xdebug.so" >> /etc/php5/apache2/conf.d/40-add.ini
 RUN echo "xdebug.remote_enable = 1" >> /etc/php5/apache2/conf.d/40-add.ini
+RUN echo "xdebug.remote_host=192.168.1.78" >> /etc/php5/apache2/conf.d/40-add.ini
 
 # Add image configuration and scripts
 ADD start-apache2.sh /start-apache2.sh
